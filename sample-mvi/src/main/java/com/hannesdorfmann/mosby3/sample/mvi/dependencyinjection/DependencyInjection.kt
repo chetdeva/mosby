@@ -137,9 +137,9 @@ class DependencyInjection {
     companion object {
 
         @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Changeable for unit testing")
-        const val BASE_URL = "https://raw.githubusercontent.com"
+        var BASE_URL = "https://raw.githubusercontent.com"
         const val BASE_URL_BRANCH = "master"
-        const val BASE_IMAGE_URL = (BASE_URL
+        var BASE_IMAGE_URL = (BASE_URL
                 + "/sockeqwe/mosby/"
                 + DependencyInjection.BASE_URL_BRANCH
                 + "/sample-mvi/server/images/")

@@ -47,50 +47,44 @@ class HomeAdapter(private val layoutInflater: LayoutInflater,
             val oldItems = this.items
             field = newItems
 
-            if (oldItems == null) {
-                notifyDataSetChanged()
-            } else {
-                DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-                    override fun getOldListSize(): Int {
-                        return oldItems.size
+            DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+                override fun getOldListSize(): Int {
+                    return oldItems.size
+                }
+
+                override fun getNewListSize(): Int {
+                    return newItems.size
+                }
+
+                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    val oldItem = oldItems[oldItemPosition]
+                    val newItem = newItems.get(newItemPosition)
+
+                    if (oldItem is Product
+                            && newItem is Product
+                            && oldItem.id == newItem.id) {
+                        return true
                     }
 
-                    override fun getNewListSize(): Int {
-                        return newItems.size
+                    if (oldItem is SectionHeader
+                            && newItem is SectionHeader
+                            && oldItem.name == newItem.name) {
+                        return true
                     }
 
-                    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                        val oldItem = oldItems[oldItemPosition]
-                        val newItem = newItems.get(newItemPosition)
+                    return (oldItem is AdditionalItemsLoadable
+                            && newItem is AdditionalItemsLoadable
+                            && oldItem.categoryName == newItem.categoryName)
 
-                        if (oldItem is Product
-                                && newItem is Product
-                                && oldItem.id == newItem.id) {
-                            return true
-                        }
+                }
 
-                        if (oldItem is SectionHeader
-                                && newItem is SectionHeader
-                                && oldItem.name == newItem.name) {
-                            return true
-                        }
+                override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    val oldItem = oldItems[oldItemPosition]
+                    val newItem = newItems.get(newItemPosition)
 
-                        return if (oldItem is AdditionalItemsLoadable
-                                && newItem is AdditionalItemsLoadable
-                                && oldItem.categoryName == newItem.categoryName) {
-                            true
-                        } else false
-
-                    }
-
-                    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                        val oldItem = oldItems[oldItemPosition]
-                        val newItem = newItems.get(newItemPosition)
-
-                        return oldItem == newItem
-                    }
-                }, true).dispatchUpdatesTo(this)
-            }
+                    return oldItem == newItem
+                }
+            }, true).dispatchUpdatesTo(this)
         }
 
     private val loadMoreItemsOfCategoryObservable = PublishSubject.create<String>()
@@ -167,7 +161,7 @@ class HomeAdapter(private val layoutInflater: LayoutInflater,
     }
 
     override fun getItemCount(): Int {
-        return if (this.items == null) 0 else this.items!!.size + if (isLoadingNextPage) 1 else 0
+        return this.items.size + if (isLoadingNextPage) 1 else 0
     }
 
     override fun loadItemsForCategory(category: String) {

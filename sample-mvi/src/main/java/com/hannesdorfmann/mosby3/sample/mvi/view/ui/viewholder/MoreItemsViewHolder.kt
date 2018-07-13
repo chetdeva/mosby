@@ -22,27 +22,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.hannesdorfmann.mosby3.sample.mvi.R
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.AdditionalItemsLoadable
 
 /**
  * @author Hannes Dorfmann
  */
-class MoreItemsViewHolder private constructor(
-        itemView: View,
-        listener: LoadItemsClickListener
-) : RecyclerView.ViewHolder(itemView) {
+class MoreItemsViewHolder(itemView: View, listener: LoadItemsClickListener) : RecyclerView.ViewHolder(itemView) {
 
-    @BindView(R.id.moreItemsCount)
-    @JvmField var moreItemsCount: TextView? = null
-    @BindView(R.id.loadingView)
-    @JvmField var loadingView: View? = null
-    @BindView(R.id.loadMoreButtton)
-    @JvmField var loadMoreButton: View? = null
-    @BindView(R.id.errorRetryButton)
-    @JvmField var errorRetry: Button? = null
+    private val moreItemsCount: TextView
+        get() = itemView.findViewById(R.id.moreItemsCount)
+    private val loadingView: View
+        get() = itemView.findViewById(R.id.loadingView)
+    private val loadMoreButton: View
+        get() = itemView.findViewById(R.id.loadMoreButtton)
+    private val errorRetry: Button
+        get() = itemView.findViewById(R.id.errorRetryButton)
 
     private var currentItem: AdditionalItemsLoadable? = null
 
@@ -51,36 +46,45 @@ class MoreItemsViewHolder private constructor(
     }
 
     init {
-        ButterKnife.bind(this, itemView)
-        itemView.setOnClickListener { listener.loadItemsForCategory(currentItem?.categoryName ?: "") }
-        errorRetry?.setOnClickListener { listener.loadItemsForCategory(currentItem?.categoryName ?: "") }
-        loadMoreButton?.setOnClickListener { listener.loadItemsForCategory(currentItem?.categoryName ?: "") }
+        itemView.setOnClickListener {
+            listener.loadItemsForCategory(currentItem?.categoryName ?: "")
+        }
+        errorRetry.setOnClickListener {
+            listener.loadItemsForCategory(currentItem?.categoryName ?: "")
+        }
+        loadMoreButton.setOnClickListener {
+            listener.loadItemsForCategory(currentItem?.categoryName ?: "")
+        }
     }
 
     fun bind(item: AdditionalItemsLoadable) {
         this.currentItem = item
 
-        if (item.isLoading) {
-            // TransitionManager.beginDelayedTransition((ViewGroup) itemView);
-            moreItemsCount?.visibility = View.GONE
-            loadMoreButton?.visibility = View.GONE
-            loadingView?.visibility = View.VISIBLE
-            errorRetry?.visibility = View.GONE
-            itemView.isClickable = false
-        } else if (item.loadingError != null) {
-            //TransitionManager.beginDelayedTransition((ViewGroup) itemView);
-            moreItemsCount?.visibility = View.GONE
-            loadMoreButton?.visibility = View.GONE
-            loadingView?.visibility = View.GONE
-            errorRetry?.visibility = View.VISIBLE
-            itemView.isClickable = true
-        } else {
-            moreItemsCount?.text = "+" + item.moreItemsCount
-            moreItemsCount?.visibility = View.VISIBLE
-            loadMoreButton?.visibility = View.VISIBLE
-            loadingView?.visibility = View.GONE
-            errorRetry?.visibility = View.GONE
-            itemView.isClickable = true
+        when {
+            item.isLoading -> {
+                // TransitionManager.beginDelayedTransition((ViewGroup) itemView);
+                moreItemsCount.visibility = View.GONE
+                loadMoreButton.visibility = View.GONE
+                loadingView.visibility = View.VISIBLE
+                errorRetry.visibility = View.GONE
+                itemView.isClickable = false
+            }
+            item.loadingError != null -> {
+                //TransitionManager.beginDelayedTransition((ViewGroup) itemView);
+                moreItemsCount.visibility = View.GONE
+                loadMoreButton.visibility = View.GONE
+                loadingView.visibility = View.GONE
+                errorRetry.visibility = View.VISIBLE
+                itemView.isClickable = true
+            }
+            else -> {
+                moreItemsCount.text = "+" + item.moreItemsCount
+                moreItemsCount.visibility = View.VISIBLE
+                loadMoreButton.visibility = View.VISIBLE
+                loadingView.visibility = View.GONE
+                errorRetry.visibility = View.GONE
+                itemView.isClickable = true
+            }
         }
     }
 

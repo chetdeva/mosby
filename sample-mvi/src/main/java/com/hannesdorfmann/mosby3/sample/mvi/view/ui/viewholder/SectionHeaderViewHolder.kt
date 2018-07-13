@@ -21,27 +21,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.hannesdorfmann.mosby3.sample.mvi.R
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.SectionHeader
 
 /**
  * @author Hannes Dorfmann
  */
-class SectionHeaderViewHolder private constructor(
-        itemView: View
-) : RecyclerView.ViewHolder(itemView) {
+class SectionHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    @BindView(R.id.sectionName)
-    @JvmField var sectionName: TextView? = null
-
-    init {
-        ButterKnife.bind(this, itemView)
-    }
+    private val sectionName: TextView
+        get() = itemView.findViewById(R.id.sectionName)
 
     fun onBind(item: SectionHeader) {
-        sectionName?.text = item.name
+        sectionName.text = item.name
     }
 
     companion object {

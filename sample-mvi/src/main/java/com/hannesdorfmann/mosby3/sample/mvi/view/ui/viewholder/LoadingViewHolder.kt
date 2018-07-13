@@ -28,9 +28,8 @@ import com.hannesdorfmann.mosby3.sample.mvi.R
  *
  * @author Hannes Dorfmann
  */
-class LoadingViewHolder private constructor(
-        itemView: View
-) : RecyclerView.ViewHolder(itemView) {
+class LoadingViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
     companion object {
 
         fun create(inflater: LayoutInflater): LoadingViewHolder {

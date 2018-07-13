@@ -39,12 +39,12 @@ class ShoppingCartOverviewAdapter(
 ) : RecyclerView.Adapter<ShoppingCartItemViewHolder>(), ShoppingCartItemViewHolder.ItemSelectedListener {
 
     private val layoutInflater: LayoutInflater = activity.layoutInflater
-    private var items: List<ShoppingCartOverviewItem>? = null
+    private var items: List<ShoppingCartOverviewItem> = emptyList()
     private val selectedProducts = PublishSubject.create<List<Product>>()
 
     private val isInSelectionMode: Boolean
         get() {
-            for (item in items!!) {
+            for (item in items) {
                 if (item.isSelected) return true
             }
 
@@ -56,11 +56,11 @@ class ShoppingCartOverviewAdapter(
     }
 
     override fun onBindViewHolder(holder: ShoppingCartItemViewHolder, position: Int) {
-        holder.bind(items!![position])
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int {
-        return if (items == null) 0 else items!!.size
+        return items.size
     }
 
     override fun onItemClicked(product: ShoppingCartOverviewItem?) {
@@ -106,7 +106,7 @@ class ShoppingCartOverviewAdapter(
 
     private fun toggleSelection(toToggle: ShoppingCartOverviewItem?) {
         val selectedItems = ArrayList<Product>()
-        for (item in items!!) {
+        for (item in items) {
 
             if (item == toToggle) {
                 if (!toToggle.isSelected) {
@@ -125,6 +125,6 @@ class ShoppingCartOverviewAdapter(
     }
 
     fun getProductAt(position: Int): Product {
-        return items!![position].product
+        return items[position].product
     }
 }

@@ -39,19 +39,16 @@ import java.util.Locale
  * @author Hannes Dorfmann
  */
 
-class ShoppingCartItemViewHolder private constructor(
-        itemView: View,
-        private val selectedListener: ItemSelectedListener
-) : RecyclerView.ViewHolder(itemView) {
+class ShoppingCartItemViewHolder(itemView: View, private val selectedListener: ItemSelectedListener) : RecyclerView.ViewHolder(itemView) {
 
     private var item: ShoppingCartOverviewItem? = null
     private val selectedDrawable: Drawable
-    @BindView(R.id.image)
-    @JvmField var image: ImageView? = null
-    @BindView(R.id.name)
-    @JvmField var name: TextView? = null
-    @BindView(R.id.price)
-    @JvmField var price: TextView? = null
+    private val image: ImageView
+        get() = itemView.findViewById(R.id.image)
+    private val name: TextView
+        get() = itemView.findViewById(R.id.name)
+    private val price: TextView
+        get() = itemView.findViewById(R.id.price)
 
     interface ItemSelectedListener {
         fun onItemClicked(product: ShoppingCartOverviewItem?)
@@ -75,10 +72,10 @@ class ShoppingCartItemViewHolder private constructor(
         Glide.with(itemView.context)
                 .load(DependencyInjection.BASE_IMAGE_URL + product.image)
                 .centerCrop()
-                .into(image!!)
+                .into(image)
 
-        name?.text = product.name
-        price?.text = String.format(Locale.US, "$ %.2f", product.price)
+        name.text = product.name
+        price.text = String.format(Locale.US, "$ %.2f", product.price)
 
         if (item.isSelected) {
             if (Build.VERSION.SDK_INT >= 23) {

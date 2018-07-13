@@ -33,7 +33,7 @@ class MainMenuAdapter(
         private val layoutInflater: LayoutInflater
 ) : RecyclerView.Adapter<MainMenuViewHolder>(), MainMenuViewHolder.MainMenuSelectionListener {
 
-    private var items: List<MainMenuItem>? = null
+    private var items: List<MainMenuItem> = emptyList()
     private val selectedItem = PublishSubject.create<String>()
 
     val selectedItemObservable: Observable<String>
@@ -44,11 +44,11 @@ class MainMenuAdapter(
     }
 
     override fun onBindViewHolder(holder: MainMenuViewHolder, position: Int) {
-        holder.bind(items!![position])
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int {
-        return if (items == null) 0 else items!!.size
+        return items.size
     }
 
     override fun onItemSelected(categoryName: String) {

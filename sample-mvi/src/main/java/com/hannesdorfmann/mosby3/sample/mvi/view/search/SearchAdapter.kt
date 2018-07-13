@@ -32,17 +32,18 @@ class SearchAdapter(
         private val inflater: LayoutInflater,
         private val productClickedListener: ProductViewHolder.ProductClickedListener
 ) : RecyclerView.Adapter<ProductViewHolder>() {
-    var products: List<Product>? = null
+
+    var products: List<Product> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         return ProductViewHolder.create(inflater, productClickedListener)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.bind(products!![position])
+        holder.bind(products[position])
     }
 
     override fun getItemCount(): Int {
-        return if (products == null) 0 else products!!.size
+        return products.size
     }
 }

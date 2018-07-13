@@ -21,8 +21,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.hannesdorfmann.mosby3.sample.mvi.R
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.MainMenuItem
 
@@ -31,25 +29,21 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.MainMenuItem
  *
  * @author Hannes Dorfmann
  */
-class MainMenuViewHolder private constructor(
-        itemView: View,
-        listener: MainMenuSelectionListener
-) : RecyclerView.ViewHolder(itemView) {
-
-    @BindView(R.id.name)
-    @JvmField var name: TextView? = null
+class MainMenuViewHolder(itemView: View, listener: MainMenuSelectionListener) : RecyclerView.ViewHolder(itemView) {
 
     interface MainMenuSelectionListener {
         fun onItemSelected(categoryName: String)
     }
 
+    private val name: TextView
+        get() = itemView.findViewById(R.id.name)
+
     init {
-        ButterKnife.bind(this, itemView)
-        itemView.setOnClickListener { listener.onItemSelected(name?.text.toString()) }
+        itemView.setOnClickListener { listener.onItemSelected(name.text.toString()) }
     }
 
     fun bind(item: MainMenuItem) {
-        name?.text = item.name
+        name.text = item.name
     }
 
     companion object {

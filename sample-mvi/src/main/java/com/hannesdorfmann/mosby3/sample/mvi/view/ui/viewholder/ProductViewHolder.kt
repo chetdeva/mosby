@@ -22,11 +22,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.mosby3.sample.mvi.R
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product
 import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection
 
@@ -35,15 +32,12 @@ import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInject
  *
  * @author Hannes Dorfmann
  */
-class ProductViewHolder private constructor(
-        itemView: View,
-        clickedListener: ProductClickedListener
-) : RecyclerView.ViewHolder(itemView) {
+class ProductViewHolder(itemView: View, clickedListener: ProductClickedListener) : RecyclerView.ViewHolder(itemView) {
 
-    @BindView(R.id.productImage)
-    @JvmField var image: ImageView? = null
-    @BindView(R.id.productName)
-    @JvmField var name: TextView? = null
+    private val image: ImageView
+        get() = itemView.findViewById(R.id.productImage)
+    private val name: TextView
+        get() = itemView.findViewById(R.id.productName)
 
     private lateinit var product: Product
 
@@ -52,7 +46,6 @@ class ProductViewHolder private constructor(
     }
 
     init {
-        ButterKnife.bind(this, itemView)
         itemView.setOnClickListener { clickedListener.onProductClicked(product) }
     }
 
@@ -61,8 +54,8 @@ class ProductViewHolder private constructor(
         Glide.with(itemView.context)
                 .load(DependencyInjection.BASE_IMAGE_URL + product.image)
                 .centerCrop()
-                .into(image!!)
-        name?.text = product.name
+                .into(image)
+        name.text = product.name
     }
 
     companion object {
