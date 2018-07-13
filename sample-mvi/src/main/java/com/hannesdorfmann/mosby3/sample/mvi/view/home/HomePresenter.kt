@@ -88,7 +88,7 @@ class HomePresenter(private val feedLoader: HomeFeedLoader) : MviBasePresenter<H
         val allIntentsObservable = Observable.merge(loadFirstPage, nextPage, pullToRefresh, loadMoreFromGroup)
                 .observeOn(AndroidSchedulers.mainThread())
 
-        val initialState = HomeViewState.Builder().firstPageLoading(true).build()
+        val initialState = HomeViewState(isLoadingFirstPage = true)
 
         subscribeViewState(
                 allIntentsObservable.scan(initialState) { previousState, partialChanges ->
@@ -103,63 +103,62 @@ class HomePresenter(private val feedLoader: HomeFeedLoader) : MviBasePresenter<H
 
         return when (partialChanges) {
             is PartialStateChanges.FirstPageLoading -> {
-                previousState.builder()
-                        .firstPageLoading(true)
-                        .firstPageError(null).build()
+                previousState.copy(
+                        isLoadingFirstPage = true,
+                        firstPageError = null)
             }
             is PartialStateChanges.FirstPageError -> {
-                previousState.builder()
-                        .firstPageLoading(false)
-                        .firstPageError(partialChanges.error)
-                        .build()
+                previousState.copy(
+                        isLoadingFirstPage = false,
+                        firstPageError = partialChanges.error)
+
             }
             is PartialStateChanges.FirstPageLoaded -> {
-                previousState.builder()
-                        .firstPageLoading(false)
-                        .firstPageError(null)
-                        .data(partialChanges.data)
-                        .build()
+                previousState.copy(
+                        isLoadingFirstPage = false,
+                        firstPageError = null,
+                        data = partialChanges.data)
+
             }
             is PartialStateChanges.NextPageLoading -> {
-                previousState.builder()
-                        .nextPageLoading(true)
-                        .nextPageError(null).build()
+                previousState.copy(
+                        isLoadingNextPage = true,
+                        nextPageError = null)
             }
             is PartialStateChanges.NexPageLoadingError -> {
-                previousState.builder()
-                        .nextPageLoading(false)
-                        .nextPageError(partialChanges.error)
-                        .build()
+                previousState.copy(
+                        isLoadingNextPage = false,
+                        nextPageError = partialChanges.error)
+
             }
             is PartialStateChanges.NextPageLoaded -> {
                 val data = ArrayList<FeedItem>(previousState.data.size + partialChanges.data.size)
                 data.addAll(previousState.data)
                 data.addAll(partialChanges.data)
 
-                previousState.builder().nextPageLoading(false).nextPageError(null).data(data).build()
+                previousState.copy(isLoadingNextPage = false, nextPageError = null, data = data)
             }
             is PartialStateChanges.PullToRefreshLoading -> {
-                previousState.builder()
-                        .pullToRefreshLoading(true)
-                        .pullToRefreshError(null)
-                        .build()
+                previousState.copy(
+                        isLoadingPullToRefresh = true,
+                        pullToRefreshError = null)
+
             }
             is PartialStateChanges.PullToRefeshLoadingError -> {
-                previousState.builder()
-                        .pullToRefreshLoading(false)
-                        .pullToRefreshError(
-                                partialChanges.error)
-                        .build()
+                previousState.copy(
+                        isLoadingPullToRefresh = false,
+                        pullToRefreshError = partialChanges.error)
+
             }
             is PartialStateChanges.PullToRefreshLoaded -> {
                 val data = ArrayList<FeedItem>(previousState.data.size + partialChanges.data.size)
                 data.addAll(partialChanges.data)
                 data.addAll(previousState.data)
-                previousState.builder()
-                        .pullToRefreshLoading(false)
-                        .pullToRefreshError(null)
-                        .data(data)
-                        .build()
+                previousState.copy(
+                        isLoadingPullToRefresh = false,
+                        pullToRefreshError = null,
+                        data = data)
+
             }
             is PartialStateChanges.ProductsOfCategoryLoading -> {
                 val found = findAdditionalItems(
@@ -173,7 +172,7 @@ class HomePresenter(private val feedLoader: HomeFeedLoader) : MviBasePresenter<H
                 data.addAll(previousState.data)
                 data[found.first] = toInsert
 
-                previousState.builder().data(data).build()
+                previousState.copy(data = data)
             }
             is PartialStateChanges.ProductsOfCategoryLoadingError -> {
                 val found = findAdditionalItems(
@@ -189,7 +188,7 @@ class HomePresenter(private val feedLoader: HomeFeedLoader) : MviBasePresenter<H
                 data.addAll(previousState.data)
                 data[found.first] = toInsert
 
-                previousState.builder().data(data).build()
+                previousState.copy(data = data)
             }
             is PartialStateChanges.ProductsOfCategoryLoaded -> {
                 val found = findAdditionalItems(
@@ -218,10 +217,9 @@ class HomePresenter(private val feedLoader: HomeFeedLoader) : MviBasePresenter<H
 
                 data.addAll(sectionHeaderIndex + 1, partialChanges.data)
 
-                previousState.builder().data(data).build()
+                previousState.copy(data = data)
             }
         }
-
     }
 
     /**

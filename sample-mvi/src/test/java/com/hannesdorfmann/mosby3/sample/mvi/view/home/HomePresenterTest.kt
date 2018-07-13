@@ -100,8 +100,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, null)
         )
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val firstPage = HomeViewState.Builder().data(expectedData).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val firstPage = HomeViewState(data = expectedData)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage)
@@ -132,8 +132,8 @@ class HomePresenterTest {
         // 2. show error indicator
         //
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val errorFirstPage = HomeViewState.Builder().firstPageError(ConnectException()).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val errorFirstPage = HomeViewState(firstPageError = ConnectException())
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, errorFirstPage)
@@ -183,8 +183,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, null)
         )
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val firstPage = HomeViewState.Builder().data(expectedDataAfterFristPage).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val firstPage = HomeViewState(data = expectedDataAfterFristPage)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage)
@@ -214,8 +214,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(1, "category2", false, null)
         )
 
-        val nextPageLoading = HomeViewState.Builder().data(expectedDataAfterFristPage).nextPageLoading(true).build()
-        val nextPage = HomeViewState.Builder().data(expectedDataAfterNextPage).build()
+        val nextPageLoading = HomeViewState(data = expectedDataAfterFristPage, isLoadingNextPage = true)
+        val nextPage = HomeViewState(data = expectedDataAfterNextPage)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage)
@@ -260,8 +260,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, null)
         )
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val firstPage = HomeViewState.Builder().data(expectedDataAfterFristPage).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val firstPage = HomeViewState(data = expectedDataAfterFristPage)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage)
@@ -280,10 +280,9 @@ class HomePresenterTest {
         // 4. show next page error (plus original first page content)
         //
 
-        val nextPageLoading = HomeViewState.Builder().data(expectedDataAfterFristPage).nextPageLoading(true).build()
-        val nextPage = HomeViewState.Builder().data(expectedDataAfterFristPage)
-                .nextPageError(ConnectException())
-                .build()
+        val nextPageLoading = HomeViewState(data = expectedDataAfterFristPage, isLoadingNextPage = true)
+        val nextPage = HomeViewState(data = expectedDataAfterFristPage, nextPageError = ConnectException())
+
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage)
@@ -337,8 +336,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, null)
         )
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val firstPage = HomeViewState.Builder().data(expectedDataAfterFristPage).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val firstPage = HomeViewState(data = expectedDataAfterFristPage)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage)
@@ -368,8 +367,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(1, "category2", false, null)
         )
 
-        val nextPageLoading = HomeViewState.Builder().data(expectedDataAfterFristPage).nextPageLoading(true).build()
-        val nextPage = HomeViewState.Builder().data(expectedDataAfterNextPage).build()
+        val nextPageLoading = HomeViewState(data = expectedDataAfterFristPage, isLoadingNextPage = true)
+        val nextPage = HomeViewState(data = expectedDataAfterNextPage)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage)
@@ -406,10 +405,9 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(1, "category2", false, null)
         )
 
-        val pullToRefreshLoading = HomeViewState.Builder().data(expectedDataAfterNextPage)
-                .pullToRefreshLoading(true)
-                .build()
-        val pullToRefreshPage = HomeViewState.Builder().data(expectedDataAfterPullToRefresh).build()
+        val pullToRefreshLoading = HomeViewState(data = expectedDataAfterNextPage, isLoadingPullToRefresh = true)
+
+        val pullToRefreshPage = HomeViewState(data = expectedDataAfterPullToRefresh)
 
         robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage,
                 pullToRefreshLoading, pullToRefreshPage)
@@ -465,8 +463,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, null)
         )
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val firstPage = HomeViewState.Builder().data(expectedDataAfterFristPage).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val firstPage = HomeViewState(data = expectedDataAfterFristPage)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage)
@@ -496,8 +494,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(1, "category2", false, null)
         )
 
-        val nextPageLoading = HomeViewState.Builder().data(expectedDataAfterFristPage).nextPageLoading(true).build()
-        val nextPage = HomeViewState.Builder().data(expectedDataAfterNextPage).build()
+        val nextPageLoading = HomeViewState(data = expectedDataAfterFristPage, isLoadingNextPage = true)
+        val nextPage = HomeViewState(data = expectedDataAfterNextPage)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage)
@@ -517,12 +515,10 @@ class HomePresenterTest {
         // 5. show loading - pull to refresh indicator
         // 6. show error loading  pull to refresh (plus original first page + next page content)
         //
-        val pullToRefreshLoading = HomeViewState.Builder().data(expectedDataAfterNextPage)
-                .pullToRefreshLoading(true)
-                .build()
-        val pullToRefreshError = HomeViewState.Builder().data(expectedDataAfterNextPage)
-                .pullToRefreshError(ConnectException())
-                .build()
+        val pullToRefreshLoading = HomeViewState(data = expectedDataAfterNextPage, isLoadingPullToRefresh = true)
+
+        val pullToRefreshError = HomeViewState(data = expectedDataAfterNextPage, pullToRefreshError = ConnectException())
+
 
         robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage,
                 pullToRefreshLoading, pullToRefreshError)
@@ -572,8 +568,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, null)
         )
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val firstPage = HomeViewState.Builder().data(expectedData).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val firstPage = HomeViewState(data = expectedData)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage)
@@ -608,8 +604,8 @@ class HomePresenterTest {
                 mockProducts[4]
         )
 
-        val loadingMoreOfCategory = HomeViewState.Builder().data(expectedDataWhileLoadingMoreOfCategory).build()
-        val moreOfCategoryLoaded = HomeViewState.Builder().data(expectedDataAfterAllOfCategoryCompleted).build()
+        val loadingMoreOfCategory = HomeViewState(data = expectedDataWhileLoadingMoreOfCategory)
+        val moreOfCategoryLoaded = HomeViewState(data = expectedDataAfterAllOfCategoryCompleted)
 
         robot.assertViewStateRendered(loadingFirstPage, firstPage, loadingMoreOfCategory,
                 moreOfCategoryLoaded)
@@ -660,8 +656,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, null)
         )
 
-        val loadingFirstPage = HomeViewState.Builder().firstPageLoading(true).build()
-        val firstPage = HomeViewState.Builder().data(expectedData).build()
+        val loadingFirstPage = HomeViewState(isLoadingFirstPage = true)
+        val firstPage = HomeViewState(data = expectedData)
 
         // Check if as expected
         robot.assertViewStateRendered(loadingFirstPage, firstPage)
@@ -696,8 +692,8 @@ class HomePresenterTest {
                 AdditionalItemsLoadable(2, "category1", false, ConnectException())
         )
 
-        val loadingMoreOfCategory = HomeViewState.Builder().data(expectedDataWhileLoadingMoreOfCategory).build()
-        val moreOfCategoryError = HomeViewState.Builder().data(expectedDataAfterLoadingMoreOfCategoryError).build()
+        val loadingMoreOfCategory = HomeViewState(data = expectedDataWhileLoadingMoreOfCategory)
+        val moreOfCategoryError = HomeViewState(data = expectedDataAfterLoadingMoreOfCategoryError)
 
         robot.assertViewStateRendered(loadingFirstPage, firstPage, loadingMoreOfCategory,
                 moreOfCategoryError)
