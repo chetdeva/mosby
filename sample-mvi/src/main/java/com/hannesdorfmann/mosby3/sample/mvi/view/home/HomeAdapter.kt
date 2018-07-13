@@ -31,20 +31,18 @@ import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.SectionHeaderViewHolder
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.atomic.AtomicReference
 
 /**
  * @author Hannes Dorfmann
  */
 
-class HomeAdapter(
-        private val layoutInflater: LayoutInflater,
-        private val productClickedListener: ProductViewHolder.ProductClickedListener
+class HomeAdapter(private val layoutInflater: LayoutInflater,
+                  private val productClickedListener: ProductViewHolder.ProductClickedListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), MoreItemsViewHolder.LoadItemsClickListener {
 
     private var isLoadingNextPage = false
     // Use Diff utils
-    var items: List<FeedItem>? = null
+    var items: List<FeedItem> = emptyList()
         set(newItems) {
             val oldItems = this.items
             field = newItems
@@ -58,12 +56,12 @@ class HomeAdapter(
                     }
 
                     override fun getNewListSize(): Int {
-                        return newItems?.size ?: 0
+                        return newItems.size
                     }
 
                     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                         val oldItem = oldItems[oldItemPosition]
-                        val newItem = newItems?.get(newItemPosition)
+                        val newItem = newItems.get(newItemPosition)
 
                         if (oldItem is Product
                                 && newItem is Product
@@ -77,15 +75,17 @@ class HomeAdapter(
                             return true
                         }
 
-                        return (oldItem is AdditionalItemsLoadable
+                        return if (oldItem is AdditionalItemsLoadable
                                 && newItem is AdditionalItemsLoadable
-                                && oldItem.categoryName == newItem.categoryName)
+                                && oldItem.categoryName == newItem.categoryName) {
+                            true
+                        } else false
 
                     }
 
                     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                         val oldItem = oldItems[oldItemPosition]
-                        val newItem = newItems?.get(newItemPosition)
+                        val newItem = newItems.get(newItemPosition)
 
                         return oldItem == newItem
                     }
@@ -93,7 +93,7 @@ class HomeAdapter(
             }
         }
 
-    private val loadMoreItemsOfCategoryObservable = AtomicReference(PublishSubject.create<String>())
+    private val loadMoreItemsOfCategoryObservable = PublishSubject.create<String>()
 
     /**
      * @return true if value has changed since last invocation
@@ -171,11 +171,11 @@ class HomeAdapter(
     }
 
     override fun loadItemsForCategory(category: String) {
-        loadMoreItemsOfCategoryObservable.get().onNext(category)
+        loadMoreItemsOfCategoryObservable.onNext(category)
     }
 
     fun loadMoreItemsOfCategoryObservable(): Observable<String> {
-        return loadMoreItemsOfCategoryObservable.get()
+        return loadMoreItemsOfCategoryObservable
     }
 
     companion object {

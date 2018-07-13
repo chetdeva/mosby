@@ -52,7 +52,7 @@ import timber.log.Timber
 class HomeFragment : MviFragment<HomeView, HomePresenter>(), HomeView, ProductViewHolder.ProductClickedListener {
 
     private lateinit var adapter: HomeAdapter
-    private var layoutManager: GridLayoutManager? = null
+    private lateinit var layoutManager: GridLayoutManager
 
     override fun createPresenter(): HomePresenter {
         Timber.d("createPresenter")
@@ -74,11 +74,12 @@ class HomeFragment : MviFragment<HomeView, HomePresenter>(), HomeView, ProductVi
         super.onViewCreated(view, savedInstanceState)
         val spanCount = resources.getInteger(R.integer.grid_span_size)
         layoutManager = GridLayoutManager(activity, spanCount)
-        layoutManager?.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
 
                 val viewType = adapter.getItemViewType(position)
-                return if (viewType == HomeAdapter.VIEW_TYPE_LOADING_MORE_NEXT_PAGE || viewType == HomeAdapter.VIEW_TYPE_SECTION_HEADER) {
+                return if (viewType == HomeAdapter.VIEW_TYPE_LOADING_MORE_NEXT_PAGE ||
+                        viewType == HomeAdapter.VIEW_TYPE_SECTION_HEADER) {
                     spanCount
                 } else 1
             }
@@ -101,7 +102,7 @@ class HomeFragment : MviFragment<HomeView, HomePresenter>(), HomeView, ProductVi
         return RxRecyclerView.scrollStateChanges(recyclerView)
                 .filter { event -> !adapter.isLoadingNextPage() }
                 .filter { event -> event == RecyclerView.SCROLL_STATE_IDLE }
-                .filter { event -> layoutManager?.findLastCompletelyVisibleItemPosition() == (adapter.items?.size ?: 0 - 1) }
+                .filter { event -> layoutManager.findLastCompletelyVisibleItemPosition() == adapter.items.size - 1}
                 .map { integer -> true }
     }
 
@@ -115,14 +116,11 @@ class HomeFragment : MviFragment<HomeView, HomePresenter>(), HomeView, ProductVi
 
     override fun render(viewState: HomeViewState) {
         Timber.d("render %s", viewState)
-        if (!viewState.isLoadingFirstPage && viewState.firstPageError == null) {
-            renderShowData(viewState)
-        } else if (viewState.isLoadingFirstPage) {
-            renderFirstPageLoading()
-        } else if (viewState.firstPageError != null) {
-            renderFirstPageError()
-        } else {
-            throw IllegalStateException("Unknown view state $viewState")
+        when {
+            !viewState.isLoadingFirstPage && viewState.firstPageError == null -> renderShowData(viewState)
+            viewState.isLoadingFirstPage -> renderFirstPageLoading()
+            viewState.firstPageError != null -> renderFirstPageError()
+            else -> throw IllegalStateException("Unknown view state $viewState")
         }
     }
 
