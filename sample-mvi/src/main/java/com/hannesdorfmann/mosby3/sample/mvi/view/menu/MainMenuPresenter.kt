@@ -64,7 +64,7 @@ class MainMenuPresenter(
 
                     MenuViewState.DataState(categoriesItems)
                 })
-                .startWith(MenuViewState.LoadingState())
+                .startWith(MenuViewState.LoadingState)
                 .onErrorReturn { MenuViewState.ErrorState(it) }
                 .observeOn(AndroidSchedulers.mainThread())
 

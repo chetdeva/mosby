@@ -15,22 +15,21 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel;
+package com.hannesdorfmann.mosby3.sample.mvi.view.checkoutbutton
 
-import com.hannesdorfmann.mosby3.mvp.MvpView;
-import io.reactivex.Observable;
+import com.hannesdorfmann.mosby3.mvp.MvpView
+import io.reactivex.Observable
 
 /**
- * A View that displays the number of items in the shopping cart
- *
  * @author Hannes Dorfmann
  */
-public interface ShoppingCartLabelView extends MvpView {
 
-  /**
-   * Intent to load the data
-   */
-  Observable<Boolean> loadIntent();
+interface CheckoutButtonView : MvpView {
 
-  void render(int intemsInShoppingCart);
+    /**
+     * Intent to load the data
+     */
+    fun loadIntent(): Observable<Boolean>
+
+    fun render(sum: Double)
 }

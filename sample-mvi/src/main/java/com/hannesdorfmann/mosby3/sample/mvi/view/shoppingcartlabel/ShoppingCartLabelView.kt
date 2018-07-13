@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hannes Dorfmann.
+ * Copyright 2017 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,22 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.category;
+package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel
 
-import com.hannesdorfmann.mosby3.mvp.MvpView;
-import io.reactivex.Observable;
+import com.hannesdorfmann.mosby3.mvp.MvpView
+import io.reactivex.Observable
 
 /**
- * View that shows all items of a given category
+ * A View that displays the number of items in the shopping cart
  *
  * @author Hannes Dorfmann
  */
-public interface CategoryView extends MvpView {
+interface ShoppingCartLabelView : MvpView {
 
-  /**
-   * Observable that triggers the intent to load the data
-   *
-   * @return Observable containing the category name as String
-   */
-  Observable<String> loadIntents();
+    /**
+     * Intent to load the data
+     */
+    fun loadIntent(): Observable<Boolean>
 
-  /**
-   * Render the state on the view
-   */
-  void render(CategoryViewState state);
+    fun render(intemsInShoppingCart: Int)
 }
