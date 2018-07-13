@@ -43,7 +43,7 @@ import timber.log.Timber
 class CategoryFragment : MviFragment<CategoryView, CategoryPresenter>(),
         CategoryView, ProductViewHolder.ProductClickedListener {
 
-    private var adapter: CategoryAdapter? = null
+    private lateinit var adapter: CategoryAdapter
 
     override fun onProductClicked(product: Product) {
         ProductDetailsActivity.start(activity, product)
@@ -99,8 +99,8 @@ class CategoryFragment : MviFragment<CategoryView, CategoryPresenter>(),
     }
 
     private fun renderData(products: List<Product>) {
-        adapter?.products = products
-        adapter?.notifyDataSetChanged()
+        adapter.products = products
+        adapter.notifyDataSetChanged()
         TransitionManager.beginDelayedTransition((view as ViewGroup))
         loadingView.visibility = View.GONE
         errorView.visibility = View.GONE

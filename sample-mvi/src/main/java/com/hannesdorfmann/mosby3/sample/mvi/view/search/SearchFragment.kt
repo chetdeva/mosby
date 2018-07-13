@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 class SearchFragment : MviFragment<SearchView, SearchPresenter>(),
         SearchView, ProductViewHolder.ProductClickedListener {
 
-    private var adapter: SearchAdapter? = null
+    private lateinit var adapter: SearchAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -79,8 +79,8 @@ class SearchFragment : MviFragment<SearchView, SearchPresenter>(),
         loadingView.visibility = View.GONE
         emptyView.visibility = View.GONE
         errorView.visibility = View.GONE
-        adapter?.products = result
-        adapter?.notifyDataSetChanged()
+        adapter.products = result
+        adapter.notifyDataSetChanged()
     }
 
     private fun renderSearchNotStarted() {

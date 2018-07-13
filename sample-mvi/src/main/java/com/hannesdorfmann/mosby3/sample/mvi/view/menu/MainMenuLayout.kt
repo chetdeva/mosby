@@ -23,8 +23,6 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.hannesdorfmann.mosby3.mvi.layout.MviFrameLayout
 import com.hannesdorfmann.mosby3.sample.mvi.R
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication
@@ -37,21 +35,18 @@ import timber.log.Timber
 class MainMenuLayout(context: Context, attrs: AttributeSet) :
         MviFrameLayout<MainMenuView, MainMenuPresenter>(context, attrs), MainMenuView {
 
-    private val adapter: MainMenuAdapter
-    @BindView(R.id.loadingView)
-    @JvmField var loadingView: View? = null
-    @BindView(R.id.recyclerView)
-    @JvmField var recyclerView: RecyclerView? = null
-    @BindView(R.id.errorView)
-    @JvmField var errorView: View? = null
+    private val itemView by lazy { View.inflate(context, R.layout.view_mainmenu, this) }
+    private val adapter: MainMenuAdapter by lazy { MainMenuAdapter(LayoutInflater.from(context)) }
+
+    private val loadingView: View
+        get() = itemView.findViewById(R.id.loadingView)
+    private val recyclerView: RecyclerView
+        get() = itemView.findViewById(R.id.recyclerView)
+    private val errorView: View
+        get() = itemView.findViewById(R.id.errorView)
 
     init {
-
-        View.inflate(context, R.layout.view_mainmenu, this)
-        ButterKnife.bind(this, this)
-
-        adapter = MainMenuAdapter(LayoutInflater.from(context))
-        recyclerView?.adapter = adapter
+        recyclerView.adapter = adapter
     }
 
     override fun createPresenter(): MainMenuPresenter {
@@ -73,21 +68,21 @@ class MainMenuLayout(context: Context, attrs: AttributeSet) :
         TransitionManager.beginDelayedTransition(this)
         when (menuViewState) {
             is MenuViewState.LoadingState -> {
-                loadingView?.visibility = View.VISIBLE
-                recyclerView?.visibility = View.GONE
-                errorView?.visibility = View.GONE
+                loadingView.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+                errorView.visibility = View.GONE
             }
             is MenuViewState.DataState -> {
                 adapter.setItems(menuViewState.categories)
                 adapter.notifyDataSetChanged()
-                loadingView?.visibility = View.GONE
-                recyclerView?.visibility = View.VISIBLE
-                errorView?.visibility = View.GONE
+                loadingView.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+                errorView.visibility = View.GONE
             }
             is MenuViewState.ErrorState -> {
-                loadingView?.visibility = View.GONE
-                recyclerView?.visibility = View.GONE
-                errorView?.visibility = View.VISIBLE
+                loadingView.visibility = View.GONE
+                recyclerView.visibility = View.GONE
+                errorView.visibility = View.VISIBLE
             }
         }
     }

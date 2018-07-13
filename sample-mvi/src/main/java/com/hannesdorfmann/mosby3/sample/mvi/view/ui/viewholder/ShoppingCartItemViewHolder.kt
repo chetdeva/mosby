@@ -25,24 +25,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.mosby3.sample.mvi.R
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product
 import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewItem
-import java.util.Locale
+import java.util.*
 
 /**
  * @author Hannes Dorfmann
  */
 
-class ShoppingCartItemViewHolder(itemView: View, private val selectedListener: ItemSelectedListener) : RecyclerView.ViewHolder(itemView) {
+class ShoppingCartItemViewHolder(itemView: View, private val selectedListener: ItemSelectedListener) :
+        RecyclerView.ViewHolder(itemView) {
 
     private var item: ShoppingCartOverviewItem? = null
     private val selectedDrawable: Drawable
+
     private val image: ImageView
         get() = itemView.findViewById(R.id.image)
     private val name: TextView
@@ -61,8 +59,6 @@ class ShoppingCartItemViewHolder(itemView: View, private val selectedListener: I
         itemView.setOnLongClickListener { v -> selectedListener.onItemLongPressed(item) }
         selectedDrawable = ColorDrawable(
                 itemView.context.resources.getColor(R.color.selected_shopping_cart_item))
-
-        ButterKnife.bind(this, itemView)
     }
 
     fun bind(item: ShoppingCartOverviewItem) {
