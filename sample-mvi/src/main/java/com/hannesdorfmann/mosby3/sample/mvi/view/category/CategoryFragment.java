@@ -59,7 +59,7 @@ public class CategoryFragment extends MviFragment<CategoryView, CategoryPresente
   private CategoryAdapter adapter;
 
   @Override public void onProductClicked(Product product) {
-    ProductDetailsActivity.start(getActivity(), product);
+    ProductDetailsActivity.Companion.start(getActivity(), product);
   }
 
   @NonNull public static CategoryFragment newInstance(@NonNull String categoryName) {
@@ -94,7 +94,7 @@ public class CategoryFragment extends MviFragment<CategoryView, CategoryPresente
 
   @NonNull @Override public CategoryPresenter createPresenter() {
     Timber.d("Create presenter");
-    return SampleApplication.getDependencyInjection(getContext()).newCategoryPresenter();
+    return SampleApplication.Companion.getDependencyInjection(getContext()).newCategoryPresenter();
   }
 
   @Override public Observable<String> loadIntents() {

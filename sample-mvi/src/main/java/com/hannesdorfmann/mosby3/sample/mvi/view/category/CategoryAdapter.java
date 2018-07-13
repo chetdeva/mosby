@@ -45,7 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<ProductViewHolder> {
   }
 
   @Override public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return ProductViewHolder.create(inflater, productClickedListener);
+    return ProductViewHolder.Companion.create(inflater, productClickedListener);
   }
 
   @Override public void onBindViewHolder(ProductViewHolder holder, int position) {

@@ -49,7 +49,7 @@ public class ShoppingCartOverviewAdapter extends RecyclerView.Adapter<ShoppingCa
   }
 
   @Override public ShoppingCartItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return ShoppingCartItemViewHolder.create(layoutInflater, this);
+    return ShoppingCartItemViewHolder.Companion.create(layoutInflater, this);
   }
 
   @Override public void onBindViewHolder(ShoppingCartItemViewHolder holder, int position) {
@@ -72,7 +72,7 @@ public class ShoppingCartOverviewAdapter extends RecyclerView.Adapter<ShoppingCa
     if (isInSelectionMode()) {
       toggleSelection(product);
     } else {
-      ProductDetailsActivity.start(activity, product.getProduct());
+      ProductDetailsActivity.Companion.start(activity, product.getProduct());
     }
   }
 

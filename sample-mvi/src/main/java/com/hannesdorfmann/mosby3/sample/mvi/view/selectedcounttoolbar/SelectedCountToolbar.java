@@ -70,7 +70,7 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
 
   @NonNull @Override public SelectedCountToolbarPresenter createPresenter() {
     Timber.d("create presenter");
-    return SampleApplication.getDependencyInjection(getContext())
+    return SampleApplication.Companion.getDependencyInjection(getContext())
         .newSelectedCountToolbarPresenter();
   }
 

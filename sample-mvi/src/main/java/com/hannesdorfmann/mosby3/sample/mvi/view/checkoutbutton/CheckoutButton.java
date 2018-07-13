@@ -56,7 +56,7 @@ public class CheckoutButton extends Button implements CheckoutButtonView,
 
   @NonNull @Override public CheckoutButtonPresenter createPresenter() {
     Timber.d("create presenter");
-    return SampleApplication.getDependencyInjection(getContext()).newCheckoutButtonPresenter();
+    return SampleApplication.Companion.getDependencyInjection(getContext()).newCheckoutButtonPresenter();
   }
 
   @Override public Parcelable superOnSaveInstanceState() {

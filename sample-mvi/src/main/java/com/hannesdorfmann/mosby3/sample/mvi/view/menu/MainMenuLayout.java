@@ -54,7 +54,7 @@ public class MainMenuLayout extends MviFrameLayout<MainMenuView, MainMenuPresent
 
   @Override public MainMenuPresenter createPresenter() {
     Timber.d("Create MainMenuPresenter");
-    return SampleApplication.getDependencyInjection(getContext()).getMainMenuPresenter();
+    return SampleApplication.Companion.getDependencyInjection(getContext()).getMainMenuPresenter();
   }
 
   @Override public Observable<Boolean> loadCategoriesIntent() {

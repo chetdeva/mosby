@@ -77,7 +77,7 @@ public class ShoppingCartOverviewFragment
 
   @NonNull @Override public ShoppingCartOverviewPresenter createPresenter() {
     Timber.d("Create Presenter");
-    return SampleApplication.getDependencyInjection(getActivity()).getShoppingCartPresenter();
+    return SampleApplication.Companion.getDependencyInjection(getActivity()).getShoppingCartPresenter();
   }
 
   @Override public Observable<Boolean> loadItemsIntent() {

@@ -75,7 +75,7 @@ public class HomePresenterTest {
     mockWebServer.start();
 
     // Set the apps url to the local mock server
-    DependencyInjection.BASE_URL = mockWebServer.url("").toString();
+    DependencyInjection.Companion.setBASE_URL(mockWebServer.url("").toString());
   }
 
   @After public void afterEachTest() throws Exception {

@@ -64,11 +64,11 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
 
   @NonNull @Override public HomePresenter createPresenter() {
     Timber.d("createPresenter");
-    return SampleApplication.getDependencyInjection(getActivity()).newHomePresenter();
+    return SampleApplication.Companion.getDependencyInjection(getActivity()).newHomePresenter();
   }
 
   @Override public void onProductClicked(Product product) {
-    ProductDetailsActivity.start(getActivity(), product);
+    ProductDetailsActivity.Companion.start(getActivity(), product);
   }
 
   @Nullable @Override

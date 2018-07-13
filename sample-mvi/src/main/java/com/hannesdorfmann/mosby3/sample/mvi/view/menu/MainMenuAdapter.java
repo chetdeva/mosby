@@ -39,7 +39,7 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuViewHolder> im
   }
 
   @Override public MainMenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return MainMenuViewHolder.create(layoutInflater, this);
+    return MainMenuViewHolder.Companion.create(layoutInflater, this);
   }
 
   @Override public void onBindViewHolder(MainMenuViewHolder holder, int position) {

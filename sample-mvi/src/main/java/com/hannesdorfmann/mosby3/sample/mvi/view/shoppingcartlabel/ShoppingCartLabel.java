@@ -50,7 +50,7 @@ public class ShoppingCartLabel extends AppCompatButton implements ShoppingCartLa
 
   @NonNull @Override public ShoppingCartLabelPresenter createPresenter() {
     Timber.d("create presenter");
-    return SampleApplication.getDependencyInjection(getContext()).newShoppingCartLabelPresenter();
+    return SampleApplication.Companion.getDependencyInjection(getContext()).newShoppingCartLabelPresenter();
   }
 
   @Override public Parcelable superOnSaveInstanceState() {

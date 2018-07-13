@@ -28,7 +28,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.SectionHeader;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.LoadingViewHolder;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.MoreItemsViewHolder;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder;
-import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.SectionHederViewHolder;
+import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.SectionHeaderViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import java.util.List;
@@ -163,13 +163,13 @@ public class HomeAdapter extends RecyclerView.Adapter
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     switch (viewType) {
       case VIEW_TYPE_PRODUCT:
-        return ProductViewHolder.create(layoutInflater, productClickedListener);
+        return ProductViewHolder.Companion.create(layoutInflater, productClickedListener);
       case VIEW_TYPE_LOADING_MORE_NEXT_PAGE:
-        return LoadingViewHolder.create(layoutInflater);
+        return LoadingViewHolder.Companion.create(layoutInflater);
       case VIEW_TYPE_MORE_ITEMS_AVAILABLE:
-        return MoreItemsViewHolder.create(layoutInflater, this);
+        return MoreItemsViewHolder.Companion.create(layoutInflater, this);
       case VIEW_TYPE_SECTION_HEADER:
-        return SectionHederViewHolder.create(layoutInflater);
+        return SectionHeaderViewHolder.Companion.create(layoutInflater);
     }
 
     throw new IllegalArgumentException("Couldn't create a ViewHolder for viewType  = " + viewType);
@@ -184,8 +184,8 @@ public class HomeAdapter extends RecyclerView.Adapter
     FeedItem item = items.get(position);
     if (holder instanceof ProductViewHolder) {
       ((ProductViewHolder) holder).bind((Product) item);
-    } else if (holder instanceof SectionHederViewHolder) {
-      ((SectionHederViewHolder) holder).onBind((SectionHeader) item);
+    } else if (holder instanceof SectionHeaderViewHolder) {
+      ((SectionHeaderViewHolder) holder).onBind((SectionHeader) item);
     } else if (holder instanceof MoreItemsViewHolder) {
       ((MoreItemsViewHolder) holder).bind((AdditionalItemsLoadable) item);
     } else {
